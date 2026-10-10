@@ -12,6 +12,14 @@ $env:TAURI_APP_PATH=".\crates\desktop\artcraft"
 # Put SQLx into offline mode (no DB hits / migrations).
 $env:SQLX_OFFLINE = "true"
 
+# Silence the codebase's (many) compiler warnings in dev builds so the useful output stays
+# visible, mirroring unix_rust_dev.sh. An explicit RUSTFLAGS from the environment wins.
+# NB: changing RUSTFLAGS invalidates cargo's cache, so the first run after a change rebuilds
+# everything.
+if (-not $env:RUSTFLAGS) {
+    $env:RUSTFLAGS = "-Awarnings"
+}
+
 # -----------------------------------------------------------------------------------------------
 # Native toolchain for BoringSSL
 #
